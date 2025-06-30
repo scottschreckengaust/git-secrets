@@ -21,23 +21,30 @@ runs:
       run: |
         make install
       shell: bash
+      shell: bash
+    - name: Checkout
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+      with:
+        path: ${{ runner.temp }}/git-secrets-checkout
+        depth: 0
+    - name: Debug
+      run: |
+        echo $GITHUB_WORKSPACE
+        ls -R $GITHUB_WORKSPACE
+        ls -R ${{ runner.temp }}/git-secrets-checkout
+        ls -l ${{ runner.temp }}/git-secrets-prefix/bin/
     - name: Install
       run: |
+        cd ${{ runner.temp }}/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
       shell: bash
     - name: Register
       run: |
+        cd ${{ runner.temp }}/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
-      shell: bash
-    - name: Debug
-      run: |
-         echo $GITHUB_WORKSPACE
-         ls -R $GITHUB_WORKSPACE
-         ls -l ${{ runner.temp }}/git-secrets-prefix/bin/
       shell: bash
     - name: Scan
       run: |
-         echo $GITHUB_WORKSPACE
-         ls $GITHUB_WORKSPACE
-         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan $GITHUB_WORKSPACE
+        cd ${{ runner.temp }}/git-secrets-checkout
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan $GITHUB_WORKSPACE
       shell: bash
