@@ -23,5 +23,5 @@ runs:
       shell: bash
     - name: Scan
       run: |
-         git secrets --scan $GITHUB_WORKSPACE
+         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan $GITHUB_WORKSPACE
       shell: bash
