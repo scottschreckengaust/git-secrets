@@ -19,6 +19,7 @@ runs:
         MANPREFIX: ${{ runner.temp }}/git-secrets-manprefix
       name: Make
       run: |
+        # make git-secrets
         make install
       shell: bash
     - name: Checkout
@@ -26,22 +27,22 @@ runs:
       with:
         path: git-secrets-checkout
         fetch-depth: 0
-    - name: Debug
-      run: |
-        ls -l ${{ runner.temp }}/git-secrets-prefix/bin/
-      shell: bash
     - name: Install
       run: |
+        # install git-secrets
         cd $GITHUB_WORKSPACE/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
       shell: bash
     - name: Register
       run: |
+        # register git-secrets
         cd $GITHUB_WORKSPACE/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
       shell: bash
     - name: Scan
       run: |
+        # scan with git-secrets
         cd $GITHUB_WORKSPACE/git-secrets-checkout
+        export PATH=PATH:${{ runner.temp }}/git-secrets-prefix/bin/
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan
       shell: bash
