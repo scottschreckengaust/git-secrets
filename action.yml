@@ -57,6 +57,8 @@ runs:
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --list
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --list
+        echo "ANPAJ2UCCR6DPCEXAMPLE" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan -
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan-history
       shell: bash
 
