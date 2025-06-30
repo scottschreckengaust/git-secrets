@@ -35,16 +35,16 @@ runs:
       shell: bash
     - name: Install
       run: |
-        cd ${{ runner.temp }}/git-secrets-checkout
+        cd $GITHUB_WORKSPACE/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
       shell: bash
     - name: Register
       run: |
-        cd ${{ runner.temp }}/git-secrets-checkout
+        cd $GITHUB_WORKSPACE/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
       shell: bash
     - name: Scan
       run: |
-        cd ${{ runner.temp }}/git-secrets-checkout
+        cd $GITHUB_WORKSPACE/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan $GITHUB_WORKSPACE
       shell: bash
