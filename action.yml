@@ -1,61 +1,86 @@
 ---
-# Description
+# EXAMPLE USAGE
 #
-# USAGE
-#
-# - uses: git-secrets/TBD
-name: git-secrets
-description: Run git secrets
+# - uses: git-secrets/scan
+#   with:
+#     checkout: true
+#     version: '5357e18bc27b42a827b6780564ea873a72ca1f01'
+
+branding:
+  color: 'orange'
+  icon: 'activity'
+description: Scan the repository history with git-secrets with register-aws
+inputs:
+  checkout:
+    default: true
+    description: 'If "true" will checkout with fetch-depth equal to zero and all the rest defaults, if "false" assumed already checked out'
+    required: false
+    type: boolean
+  version:
+    default: '5357e18bc27b42a827b6780564ea873a72ca1f01'
+    description: 'The version or hash of git-secrets'
+    required: false
+    type: string
+name: scan
 runs:
-  using: "composite"
   steps:
-    - name: Checkout
+
+    - name: Checkout awslabs/git-secrets
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
       with:
         repository: 'awslabs/git-secrets'
-        ref: '5357e18bc27b42a827b6780564ea873a72ca1f01' # 2025-06-30 because tags are outdated
+        ref: ${{ inputs.ref }}
+        path: $GITHUB_WORKSPACE/git-secrets-repository
+
     - env:
         PREFIX : ${{ runner.temp }}/git-secrets-prefix
         MANPREFIX: ${{ runner.temp }}/git-secrets-manprefix
-      name: Make
+      name: Install git-secrets
       run: |
         # make git-secrets
+        cd $GITHUB_WORKSPACE/git-secrets-repository # MUST MATCH ABOVE
         make install
       shell: bash
-    - name: Checkout
+
+    - name: Remove the awslabs/git-secrets Repository (don't scan itself)
+      run: |
+        # remove git-secrets repository
+        rm -r -f $GITHUB_WORKSPACE/git-secrets-repository # MUST MATCH ABOVE
+      shell: bash
+
+    - if: inputs.checkout
+      name: Checkout the repository to scan history
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
       with:
-        path: git-secrets-checkout
-        fetch-depth: 0
-    - name: Install
+        fetch-depth: 0 # to scan history
+
+    - name: Install git-secrets into the repository
       run: |
         # install git-secrets
-        cd $GITHUB_WORKSPACE/git-secrets-checkout
+        # cd $GITHUB_WORKSPACE/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
       shell: bash
-    - name: Register
+
+    - name: Register AWS for the respository
       run: |
         # register git-secrets
-        cd $GITHUB_WORKSPACE/git-secrets-checkout
+        # cd $GITHUB_WORKSPACE/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
       shell: bash
-    - name: List
+
+    - name: List the git-secrets for the repository
       run: |
         # list git-secrets
-        cd $GITHUB_WORKSPACE/git-secrets-checkout
+        # cd $GITHUB_WORKSPACE/git-secrets-checkout
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --list
       shell: bash
-    - name: Test
+
+    - name: Scan the history for the reposistory
       run: |
         # scan with git-secrets
-        cd $GITHUB_WORKSPACE/git-secrets-checkout
+        # cd $GITHUB_WORKSPACE/git-secrets-checkout
         export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
-        echo "ASIA1234567890123456" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan -
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan-history
       shell: bash
-    - name: Scan
-      run: |
-        # scan with git-secrets
-        cd $GITHUB_WORKSPACE/git-secrets-checkout
-        export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
-        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan
-      shell: bash
+
+  using: "composite"
