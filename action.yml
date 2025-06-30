@@ -13,7 +13,7 @@ runs:
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
       with:
         repository: 'awslabs/git-secrets'
-        ref: 'ad82d68ee924906a0401dfd48de5057731a9bc84' #v1.3.0
+        ref: '5357e18bc27b42a827b6780564ea873a72ca1f01' # 2025-06-30 because tags are outdated
     - env:
         PREFIX : ${{ runner.temp }}/git-secrets-prefix
         MANPREFIX: ${{ runner.temp }}/git-secrets-manprefix
