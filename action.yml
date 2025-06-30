@@ -21,7 +21,6 @@ runs:
       run: |
         make install
       shell: bash
-      shell: bash
     - name: Checkout
       uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
       with:
@@ -33,6 +32,7 @@ runs:
         ls -R $GITHUB_WORKSPACE
         ls -R ${{ runner.temp }}/git-secrets-checkout
         ls -l ${{ runner.temp }}/git-secrets-prefix/bin/
+      shell: bash
     - name: Install
       run: |
         cd ${{ runner.temp }}/git-secrets-checkout
