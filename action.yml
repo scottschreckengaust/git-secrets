@@ -20,8 +20,12 @@ runs:
       name: Install
       run: |
         make install
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
       shell: bash
     - name: Scan
       run: |
+         echo $GITHUB_WORKSPACE
+         ls $GITHUB_WORKSPACE
          ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan $GITHUB_WORKSPACE
       shell: bash
