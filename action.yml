@@ -14,7 +14,10 @@ runs:
       with:
         repository: 'awslabs/git-secrets'
         ref: 'ad82d68ee924906a0401dfd48de5057731a9bc84' #v1.3.0
-    - name: Install
+    - env:
+        PREFIX : ${{ runner.temp }}/git-secrets-prefix
+        MANPREFIX: ${{ runner.temp }}/git-secrets-manprefix
+      name: Install
       run: |
         make install
       shell: bash
