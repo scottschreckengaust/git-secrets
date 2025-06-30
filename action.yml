@@ -50,7 +50,7 @@ runs:
         # scan with git-secrets
         cd $GITHUB_WORKSPACE/git-secrets-checkout
         export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
-        echo "ASAIZ1234567890123456" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan -
+        echo "ASIA1234567890123456" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan -
       shell: bash
     - name: Scan
       run: |
