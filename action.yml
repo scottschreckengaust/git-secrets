@@ -17,11 +17,23 @@ runs:
     - env:
         PREFIX : ${{ runner.temp }}/git-secrets-prefix
         MANPREFIX: ${{ runner.temp }}/git-secrets-manprefix
-      name: Install
+      name: Make
       run: |
         make install
+      shell: bash
+    - name: Install
+      run: |
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
+      shell: bash
+    - name: Register
+      run: |
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
+      shell: bash
+    - name: Debug
+      run: |
+         echo $GITHUB_WORKSPACE
+         ls -R $GITHUB_WORKSPACE
+         ls -l ${{ runner.temp }}/git-secrets-prefix/bin/
       shell: bash
     - name: Scan
       run: |
