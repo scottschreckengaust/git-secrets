@@ -38,13 +38,9 @@ runs:
       name: Install git-secrets
       run: |
         # make git-secrets
-        cd $GITHUB_WORKSPACE/git-secrets-repository # MUST MATCH ABOVE
-        make install
-      shell: bash
-
-    - name: Remove the awslabs/git-secrets Repository (don't scan itself)
-      run: |
-        # remove git-secrets repository
+        cd $GITHUB_WORKSPACE/git-secrets-repository; # MUST MATCH ABOVE
+        make install;
+        cd $GITHUB_WORKSPACE
         rm -r -f $GITHUB_WORKSPACE/git-secrets-repository # MUST MATCH ABOVE
       shell: bash
 
@@ -57,29 +53,10 @@ runs:
     - name: Install git-secrets into the repository
       run: |
         # install git-secrets
-        # cd $GITHUB_WORKSPACE/git-secrets-checkout
-        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
-      shell: bash
-
-    - name: Register AWS for the respository
-      run: |
-        # register git-secrets
-        # cd $GITHUB_WORKSPACE/git-secrets-checkout
-        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
-      shell: bash
-
-    - name: List the git-secrets for the repository
-      run: |
-        # list git-secrets
-        # cd $GITHUB_WORKSPACE/git-secrets-checkout
-        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --list
-      shell: bash
-
-    - name: Scan the history for the reposistory
-      run: |
-        # scan with git-secrets
-        # cd $GITHUB_WORKSPACE/git-secrets-checkout
         export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --list
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan-history
       shell: bash
 
