@@ -30,7 +30,7 @@ runs:
       with:
         repository: 'awslabs/git-secrets'
         ref: ${{ inputs.ref }}
-        path: $GITHUB_WORKSPACE/git-secrets-repository
+        path: git-secrets-repository
 
     - env:
         PREFIX : ${{ runner.temp }}/git-secrets-prefix
