@@ -43,6 +43,6 @@ runs:
       run: |
         # scan with git-secrets
         cd $GITHUB_WORKSPACE/git-secrets-checkout
-        export PATH=PATH:${{ runner.temp }}/git-secrets-prefix/bin/
+        export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan
       shell: bash
