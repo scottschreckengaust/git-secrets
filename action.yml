@@ -30,7 +30,7 @@ runs:
       run: |
         echo $GITHUB_WORKSPACE
         ls -R $GITHUB_WORKSPACE
-        ls -R ${{ runner.temp }}/git-secrets-checkout
+        ls -R $GITHUB_WORKSPACE/git-secrets-checkout
         ls -l ${{ runner.temp }}/git-secrets-prefix/bin/
       shell: bash
     - name: Install
