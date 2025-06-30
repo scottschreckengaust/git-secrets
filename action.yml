@@ -33,16 +33,15 @@ runs:
     - name: Install
       run: |
         cd $GITHUB_WORKSPACE/git-secrets-checkout
-        echo "Terminal is : $TERM"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
       shell: bash
-    # - name: Register
-    #   run: |
-    #     cd $GITHUB_WORKSPACE/git-secrets-checkout
-    #     ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
-    #   shell: bash
-    # - name: Scan
-    #   run: |
-    #     cd $GITHUB_WORKSPACE/git-secrets-checkout
-    #     ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan $GITHUB_WORKSPACE
-    #   shell: bash
+    - name: Register
+      run: |
+        cd $GITHUB_WORKSPACE/git-secrets-checkout
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
+      shell: bash
+    - name: Scan
+      run: |
+        cd $GITHUB_WORKSPACE/git-secrets-checkout
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan
+      shell: bash
