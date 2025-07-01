@@ -57,7 +57,7 @@ runs:
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --list
-        echo "je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan - || echo "simulated error"
+        echo "AKIAI44QH8DHBEXAMPLE" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan - || echo "simulated error"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan-history
       shell: bash
 
