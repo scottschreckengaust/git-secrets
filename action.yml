@@ -61,10 +61,17 @@ runs:
       run: |
         # install git-secrets
         export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
+
+        echo "Install git-secrets"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
+        echo "Register AWS"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
+        echo "List git-secrets"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --list
-        echo "je7MtGbClwBF/2Zp9Utk/h3yCo8nvbEXAMPLEKEY" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan - || echo "simulated error"
+        echo "Simulate a skipped secret"
+        echo "AKIAIOSFODNN7EXAMPLE" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan - || echo "simulated error"
+        echo "Simulate a skipped real secret"
+        echo "AKIAEXAMPLE77EXAMPLE" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan - || echo "simulated error"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan-history
       shell: bash
 
