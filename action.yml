@@ -38,7 +38,7 @@ runs:
         path: git-secrets-repository
     - run: |
         ls $GITHUB_WORKSPACE/git-secrets-repository;
-
+      shell: bash
     - env:
         PREFIX : ${{ runner.temp }}/git-secrets-prefix
         MANPREFIX: ${{ runner.temp }}/git-secrets-manprefix
