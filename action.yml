@@ -81,6 +81,9 @@ runs:
         echo "::group::List git-secrets"
         git-secrets --list
         echo "::endgroup::"
+        echo "::group::Allowed git-secrets"
+        cat .gitallowed || echo ""
+        echo "::endgroup::"
       shell: bash
     - name: Scan with git-secrets
       run: |
