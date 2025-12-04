@@ -26,6 +26,14 @@ inputs:
     description: 'The version or hash of git-secrets'
     required: false
     type: string
+  scan-type:
+    default: '--scan-history'
+    description: 'The type of scan'
+    required: false
+    type: choice
+    options:
+      - '--scan-history'
+      - '--scan'
 name: scan
 runs:
   steps:
@@ -66,13 +74,17 @@ runs:
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
         echo "Register AWS"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --register-aws
+
+        echo "Test AWS Secrets Detection"
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --aws-provider | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan - || echo "Detected secrets correctly"
+
         echo "List git-secrets"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --list
-        echo "Simulate a skipped secret"
-        echo "AKIAIOSFODNN7EXAMPLE" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan - || echo "simulated error"
-        echo "Simulate a skipped real secret"
-        echo "AKIAEXAMPLE77EXAMPLE" | ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan - || echo "simulated error"
-        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --scan-history
+      shell: bash
+
+    - name: Scan with git-secrets
+      run: |      
+        ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets ${{ inputs.scan-type }}
       shell: bash
 
   using: "composite"
