@@ -35,6 +35,8 @@ inputs:
       - '--scan-history'
       - '--scan'
 name: scan
+env:
+  GIT_SECRETS_REPOSITORY_PATH : git-secrets-repository
 runs:
   steps:
 
@@ -43,20 +45,21 @@ runs:
       with:
         repository: 'awslabs/git-secrets'
         ref: ${{ inputs.ref }}
-        path: git-secrets-repository
+        path: $GIT_SECRETS_REPOSITORY_PATH
     - run: |
-        ls $GITHUB_WORKSPACE/git-secrets-repository;
+        ls $GITHUB_WORKSPACE/$GIT_SECRETS_REPOSITORY_PATH;
       shell: bash
     - env:
         PREFIX : ${{ runner.temp }}/git-secrets-prefix
         MANPREFIX: ${{ runner.temp }}/git-secrets-manprefix
-      name: Install git-secrets
+      name: Make git-secrets
       run: |
-        # make git-secrets
-        cd $GITHUB_WORKSPACE/git-secrets-repository; # MUST MATCH ABOVE
+        # Make git-secrets
+        cd $GITHUB_WORKSPACE/$GIT_SECRETS_REPOSITORY_PATH; # MUST MATCH ABOVE
         make install;
         cd $GITHUB_WORKSPACE
-        rm -r -f $GITHUB_WORKSPACE/git-secrets-repository # MUST MATCH ABOVE
+        rm -r -f $GITHUB_WORKSPACE/$GIT_SECRETS_REPOSITORY_PATH # MUST MATCH ABOVE
+        echo "${{ runner.temp }}/git-secrets-prefix/bin/" >> "$GITHUB_PATH"
       shell: bash
 
     - if: inputs.checkout
@@ -68,7 +71,8 @@ runs:
     - name: Install git-secrets into the repository
       run: |
         # install git-secrets
-        export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
+        echo $PATH
+        # export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
 
         echo "Install git-secrets"
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets --install
@@ -84,7 +88,7 @@ runs:
 
     - name: Scan with git-secrets
       run: |
-        export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
+        # export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
 
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets ${{ inputs.scan-type }}
       shell: bash
