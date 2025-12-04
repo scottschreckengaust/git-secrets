@@ -83,7 +83,9 @@ runs:
       shell: bash
 
     - name: Scan with git-secrets
-      run: |      
+      run: |
+        export PATH=$PATH:${{ runner.temp }}/git-secrets-prefix/bin/
+
         ${{ runner.temp }}/git-secrets-prefix/bin/git-secrets ${{ inputs.scan-type }}
       shell: bash
 
