@@ -45,7 +45,7 @@ runs:
       with:
         repository: 'awslabs/git-secrets'
         ref: ${{ inputs.ref }}
-        path: $GIT_SECRETS_REPOSITORY_PATH
+        path: ${{ env.GIT_SECRETS_REPOSITORY_PATH }}
     - run: |
         ls $GITHUB_WORKSPACE/$GIT_SECRETS_REPOSITORY_PATH;
       shell: bash
